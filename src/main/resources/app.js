@@ -9,14 +9,8 @@ function contentLoadedListener(event) {
         var searchParams = new URLSearchParams(decodeURIComponent(window.location.search));
         var option = searchParams.get("option");
         var keyword = searchParams.get("keyword");
-        fetch("http://localhost:8080/books", {
-           method: 'POST',
-           redirect: 'follow',
-           headers: new Headers({'content-type': 'application/json'}),
-           body: JSON.stringify({
-                "option": option,
-                "keyword": keyword
-           })
+        fetch(`http://localhost:8080/books?option=${option}&keyword=${keyword}`, {
+           method: 'GET'
         })
         .then(response => response.text())
         .then(result => loadDataIntoPage(JSON.parse(result)))
@@ -71,7 +65,7 @@ function loadDataIntoPage(data) {
             pages.innerHTML = item.pages;
 
             var link = document.createElement("td");
-            link.innerHTML = "<a href='/download/book/" + item.id + "'>Download</a>";
+            link.innerHTML = "<a href='/book/download?id=" + item.id + "'>Download</a>";
 
             tr.appendChild(title);
             tr.appendChild(author);
@@ -104,7 +98,7 @@ function fileUploadListener(event) {
       redirect: 'follow'
     };
 
-    fetch("http://localhost:8080/upload/book", requestOptions)
+    fetch("http://localhost:8080/book/upload", requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));

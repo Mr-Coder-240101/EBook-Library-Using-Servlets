@@ -15,12 +15,30 @@ public class BookManagingService {
         session.close();
     }
 
+    public BooksData getBooksData(String id) {
+        var session = HibernateSessionProvider.getSession();
+        var transaction = session.beginTransaction();
+        var booksData = session.get(BooksData.class, id);
+        transaction.commit();
+        session.close();
+        return booksData;
+    }
+
     public void saveBooksDetails(BooksDetails booksDetails) {
         var session = HibernateSessionProvider.getSession();
         var transaction = session.beginTransaction();
         session.save(booksDetails);
         transaction.commit();
         session.close();
+    }
+
+    public BooksDetails getBooksDetails(String id) {
+        var session = HibernateSessionProvider.getSession();
+        var transaction = session.beginTransaction();
+        var booksDetails = session.get(BooksDetails.class, id);
+        transaction.commit();
+        session.close();
+        return booksDetails;
     }
 
     public List<BooksDetails> getAllBookDetails() {
